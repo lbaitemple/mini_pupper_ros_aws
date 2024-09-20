@@ -26,7 +26,7 @@ LABEL build_step="DemoNodesROSPackage_Build"
 RUN mkdir -p /ws/src
 WORKDIR /ws/src
 
-RUN git clone  -b ros2-dev  https://github.com/mangdangroboticsclub/mini_pupper_ros.git  /ws/src/mini_pupper_ros  
+RUN git clone  -b ros2-dev  https://github.com/lbaitemple/mini_pupper_ros_aws  /ws/src/mini_pupper_ros  
 
 RUN vcs import < mini_pupper_ros/.minipupper.repos --recursive && \
 touch champ/champ/champ_gazebo/AMENT_IGNORE && \
