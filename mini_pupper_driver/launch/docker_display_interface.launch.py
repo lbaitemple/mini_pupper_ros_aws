@@ -45,6 +45,6 @@ def generate_launch_description():
         )
 
     ld.add_action(launch_bringup)
-    ld.add_action(dance_node)
+    ld.add_action(display_node)
     
     return ld
