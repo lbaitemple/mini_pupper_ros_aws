@@ -16,16 +16,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
-
+from launch.actions import SetEnvironmentVariable
+from ament_index_python.packages import get_package_share_directory
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
-    return LaunchDescription([
-        Node(
+
+    ld = LaunchDescription()
+    
+    bringup_path = os.path.join(
+        get_package_share_directory('mini_pupper_bringup'),
+        'launch/bringup.launch.py'
+    )
+
+    launch_bringup=IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(bringup_path)
+    )
+
+    display_node = Node(
             package='mini_pupper_driver',
             executable='display_interface',
             name='display_interface',
             output='screen'
         )
-    ])
+
+    ld.add_action(launch_bringup)
+    ld.add_action(dance_node)
+    
+    return ld
