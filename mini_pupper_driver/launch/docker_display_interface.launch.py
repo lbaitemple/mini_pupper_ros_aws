@@ -41,6 +41,9 @@ def generate_launch_description():
             package='mini_pupper_driver',
             executable='display_interface',
             name='display_interface',
+            remappings=[
+                ("mini_pupper_lcd/image_raw", "image_raw")
+            ],
             output='screen'
         )
 
