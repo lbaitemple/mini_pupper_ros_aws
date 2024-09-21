@@ -43,19 +43,19 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && cd .. && \
     colcon build --build-base workspace/build --install-base /opt/ros_demos
 
 # ==== Package 2: Greengrass Bridge Node ==== 
-#FROM build-base AS greengrass-bridge-package
-#LABEL component="com.example.ros2.mini_pupper_v2"
-#LABEL build_step="GreengrassBridgeROSPackage_Build"
-#ARG LOCAL_WS_DIR
+FROM build-base AS greengrass-bridge-package
+LABEL component="com.example.ros2.mini_pupper_v2"
+LABEL build_step="GreengrassBridgeROSPackage_Build"
+ARG LOCAL_WS_DIR
 
-#COPY ${LOCAL_WS_DIR}/src /ws/src
-#WORKDIR /ws
+COPY ${LOCAL_WS_DIR}/src /ws/src
+WORKDIR /ws
 
 # Cache the colcon build directory.
-#RUN --mount=type=cache,target=${LOCAL_WS_DIR}/build:/ws/build \
-#    . /opt/ros/$ROS_DISTRO/setup.sh && \
-#    colcon build \
-#     --install-base /opt/greengrass_bridge
+RUN --mount=type=cache,target=${LOCAL_WS_DIR}/build:/ws/build \
+    . /opt/ros/$ROS_DISTRO/setup.sh && \
+    colcon build \
+     --install-base /opt/greengrass_bridge
 
 # ==== ROS Runtime Image (with the two packages) ====
 FROM build-base AS runtime-image
@@ -76,7 +76,7 @@ RUN python setup.py install
 
 
 COPY --from=ros-demos-package /opt/ros_demos /opt/ros_demos
-#COPY --from=greengrass-bridge-package /opt/greengrass_bridge /opt/greengrass_bridge
+COPY --from=greengrass-bridge-package /opt/greengrass_bridge /opt/greengrass_bridge
 
 RUN mkdir -p /root/.ros/camera_info/
 COPY mmal_service_16.1.yaml /root/.ros/camera_info
