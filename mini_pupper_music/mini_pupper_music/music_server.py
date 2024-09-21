@@ -37,7 +37,11 @@ class MusicServiceNode(Node):
             'stop_music',
             self.stop_music_callback
         )
+        self.music_file_sub = self.create_subscription(String, '/music_config', self.music_config_callback, 10)
 
+    def music_config_callback(self, msg):
+        self.music_file_name = msg.data
+        
     def play_music_callback(self, request, response):
         file_path = self.get_valid_file_path(request.file_name)
         if file_path is not None:
