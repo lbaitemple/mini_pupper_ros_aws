@@ -22,27 +22,12 @@ from .music_player import MusicPlayer
 import os
 from ament_index_python.packages import get_package_share_directory
 
-class MiniPupperMusicClientAsync(Node):
-
-    def __init__(self):
-        super().__init__('mini_pupper_music_client_async')
-        self.cli = self.create_client(SetBool, '/music_command')
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.req = SetBool.Request()
-
-
-    def send_request(self, music_command):
-        self.req.data = music_command
-        self.get_logger().info('music service send {}'.format(music_command))
-        self.future = self.cli.call_async(self.req)
-        rclpy.spin_until_future_complete(self, self.future)
-        return self.future.result()
-
 class MusicServiceNode(Node):
     def __init__(self):
         super().__init__('mini_pupper_music_service')
         self.music_player = MusicPlayer()
+        self.music_file_name =''
+        self.music_config_sub = self.create_subscription(String, '/music_config', self.music_config_callback, 10
         self.play_service = self.create_service(
             PlayMusic,
             'play_music',
