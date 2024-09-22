@@ -3,6 +3,7 @@ services:
   greengrass_minipupper_image:
     build: 
         context: ./
+        dockerfile: Dockerfile_music 
     image: ros-humble-greengrass-minipupper:latest
     
   pupper-robot:
