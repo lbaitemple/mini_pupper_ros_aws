@@ -11,11 +11,11 @@ LABEL component="com.example.ros2.mini_pupper_v2"
 LABEL build_step="ROSDemoNodes_Build"
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F42ED6FBAB17C654
-RUN apt-get update --fix-missing && apt-get install python3-pip -y
+RUN apt-get update --fix-missing && apt-get install python3-pip  ffmpeg portaudio19-dev -y
 RUN apt-get update --fix-missing && apt-get install ros-$ROS_DISTRO-example-interfaces \
 ros-$ROS_DISTRO-xacro  ros-$ROS_DISTRO-robot-localization ros-$ROS_DISTRO-v4l2-camera \
 ros-$ROS_DISTRO-image-transport-plugins  -y
-#RUN python3 -m pip install awsiotsdk
+RUN pip3 install awsiotsdk pydub pyaudio pydub
 
 # ==== Package 1: ROS Demos Talker/Listener ==== 
 FROM build-base AS ros-demos-package
@@ -67,7 +67,7 @@ RUN git clone https://github.com/mangdangroboticsclub/mini_pupper_2_bsp /tmp/min
 # Set the working directory to the Python package directory
 WORKDIR /tmp/mini_pupper_2_bsp/Python_Module
 RUN apt update 
-RUN apt install python3-pip python3-dev python-is-python3 -y
+RUN apt install python3-pip python3-dev python-is-python3 -y 
 # Install Python dependencies from requirements.txt if available
 RUN pip install -r requirements.txt
 
