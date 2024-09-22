@@ -1,33 +1,16 @@
-#!/usr/bin/env python3
-#
-# Copyright 2023 MangDang
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# @Author  : Cullen SUN
-
 import rclpy
 from rclpy.node import Node
 from mini_pupper_interfaces.srv import PlayMusic, StopMusic
+from std_msgs.msg import String  # Import the message type
 from .music_player import MusicPlayer
 import os
 from ament_index_python.packages import get_package_share_directory
+
 
 class MusicServiceNode(Node):
     def __init__(self):
         super().__init__('mini_pupper_music_service')
         self.music_player = MusicPlayer()
-        self.music_file_name =''
-        self.music_config_sub = self.create_subscription(String, '/music_config', self.music_config_callback, 10
         self.play_service = self.create_service(
             PlayMusic,
             'play_music',
@@ -38,11 +21,24 @@ class MusicServiceNode(Node):
             'stop_music',
             self.stop_music_callback
         )
-        self.music_file_sub = self.create_subscription(String, '/music_config', self.music_config_callback, 10)
 
-    def music_config_callback(self, msg):
-        self.music_file_name = msg.data
-        
+        # Create a subscriber for the /music_file topic
+        self.music_file_subscriber = self.create_subscription(
+            String,
+            '/music_file',
+            self.music_file_callback,
+            10  # QoS profile, can adjust as needed
+        )
+
+    def music_file_callback(self, msg):
+        request = type('Request', (), {})()  # Create a simple request object
+        request.file_name = msg.data  # Assume msg.data contains the file name
+        request.start_second = 0.0
+        request.duration = 0
+        response = self.play_music_callback(request, type('Response', (), {})())
+        # Optionally, you can log the response message
+        self.get_logger().info(response.message)
+
     def play_music_callback(self, request, response):
         file_path = self.get_valid_file_path(request.file_name)
         if file_path is not None:
@@ -73,9 +69,14 @@ class MusicServiceNode(Node):
         return response
 
     def get_valid_file_path(self, file_name):
-        package_name = 'mini_pupper_music'
-        package_path = get_package_share_directory(package_name)
-        file_path = os.path.join(package_path, 'audio', file_name)
+        #package_name = 'mini_pupper_music'
+        #package_path = get_package_share_directory(package_name)
+        music_folder = os.getenv('MUSIC_FOLDER')  # Get the MUSIC_FOLDER environment variable
+        if music_folder is None:
+            self.get_logger().error('MUSIC_FOLDER environment variable is not set.')
+            return None
+
+        file_path = os.path.join(music_folder, file_name)
         if os.path.isfile(file_path):
             return file_path
         else:
