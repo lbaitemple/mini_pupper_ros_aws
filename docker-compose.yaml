@@ -8,11 +8,34 @@ services:
     
   pupper-robot:
     image: ros-humble-greengrass-minipupper:latest
-    command: ros2 launch mini_pupper_driver docker_display_interface.launch.py
+    command: ros2 launch mini_pupper_music music.launch.py
+    environment:
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - GAZEBO_MASTER_URI=http://localhost:5555
+      - ROS_MASTER_URI=http://localhost:11311
+      - MUISC_FOLDER=/home/ubuntu/audio
+      - HARDWARE=true
+    network_mode: "host"
     privileged: true
     user: root
     volumes:
-      - /dev/video0:/dev/video0
-      - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
+      - /greengrass:/greengrass
       - /dev:/dev
       - /sys:/sys
+      - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
+      - /home/ggc_user/routines:/home/robomaker/routines
+      - /home/ggc_user/aws_iot_params.yaml:/config/aws_iot_params.yaml
+
+
+  greengrass_bridge:
+    image: ros-humble-greengrass-minipupper:latest
+    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['music_file']" iot_topics:="['music_file']"
+    environment:
+      - AWS_REGION
+      - SVCUID
+      - AWS_GG_NUCLEUS_DOMAIN_SOCKET_FILEPATH_FOR_COMPONENT
+      - AWS_CONTAINER_AUTHORIZATION_TOKEN
+      - AWS_CONTAINER_CREDENTIALS_FULL_URI
+    volumes: 
+      - "/greengrass/v2/ipc.socket:/greengrass/v2/ipc.socket"
