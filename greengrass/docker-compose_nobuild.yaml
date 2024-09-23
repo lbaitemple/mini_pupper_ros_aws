@@ -9,11 +9,13 @@ services:
       - QT_X11_NO_MITSHM=1
       - GAZEBO_MASTER_URI=http://localhost:5555
       - ROS_MASTER_URI=http://localhost:11311
-      - MUISC_FOLDER=/app/audio
+      - MUSIC_FOLDER=/app/audio
       - HARDWARE=true
     network_mode: "host"
     privileged: true
     user: root
+    devices:
+      - "/dev/snd:/dev/snd"   # Pass the sound device from the host to the container
     volumes:
       - /greengrass:/greengrass
       - /dev:/dev
@@ -21,11 +23,12 @@ services:
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
       - /home/ubuntu/audio:/app/audio 
       - /home/ggc_user/aws_iot_params.yaml:/config/aws_iot_params.yaml
+      - /etc/asound.conf:/home/ubuntu/.asoundrc   # Share ALSA configuration
 
 
   greengrass_bridge:
     image: ros-humble-greengrass-minipupper:latest
-    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['music_file']" iot_topics:="['iot_music_file']"
+    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['cmusic_file']" iot_topics:="['music_file']"
     environment:
       - AWS_REGION
       - SVCUID

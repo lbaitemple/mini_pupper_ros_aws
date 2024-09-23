@@ -1,7 +1,7 @@
 ---
 RecipeFormatVersion: '2020-01-25'
 ComponentName: com.example.ros2.mini_pupper_v2
-ComponentVersion: '1.0.3'
+ComponentVersion: '1.0.7'
 ComponentDescription: 'A basic component that runs a mini_pupper_v2 application'
 ComponentPublisher: Amazon
 ComponentDependencies:
@@ -20,7 +20,7 @@ ComponentConfiguration:
           - "aws.greengrass#SubscribeToIoTCore"
           resources:
           - "music_file"
-          - "cmusic_file"
+          - "iot_music_file"
 Manifests:
 
   - Platform:
