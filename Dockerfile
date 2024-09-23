@@ -15,7 +15,8 @@ RUN apt-get update --fix-missing && apt-get install python3-pip  ffmpeg portaudi
 RUN apt-get update --fix-missing && apt-get install ros-$ROS_DISTRO-example-interfaces \
 ros-$ROS_DISTRO-xacro  ros-$ROS_DISTRO-robot-localization ros-$ROS_DISTRO-v4l2-camera \
 ros-$ROS_DISTRO-image-transport-plugins  -y
-RUN pip3 install awsiotsdk pydub pyaudio pydub
+RUN python3 -m pip install awsiotsdk pydub pyaudio pydub sounddevice
+
 
 # ==== Package 1: ROS Demos Talker/Listener ==== 
 FROM build-base AS ros-demos-package
