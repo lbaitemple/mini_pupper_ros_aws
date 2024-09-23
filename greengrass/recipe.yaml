@@ -1,7 +1,7 @@
 ---
 RecipeFormatVersion: '2020-01-25'
 ComponentName: com.example.ros2.mini_pupper_v2
-ComponentVersion: '1.0.0'
+ComponentVersion: '1.0.3'
 ComponentDescription: 'A basic component that runs a mini_pupper_v2 application'
 ComponentPublisher: Amazon
 ComponentDependencies:

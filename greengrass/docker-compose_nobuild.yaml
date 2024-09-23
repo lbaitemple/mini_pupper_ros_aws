@@ -25,7 +25,7 @@ services:
 
   greengrass_bridge:
     image: ros-humble-greengrass-minipupper:latest
-    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['music_file']" iot_topics:="['music_file']"
+    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['music_file']" iot_topics:="['iot_music_file']"
     environment:
       - AWS_REGION
       - SVCUID

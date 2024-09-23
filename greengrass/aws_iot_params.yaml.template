@@ -38,5 +38,5 @@ bridge:
   - factory: mqtt_bridge.bridge:RosToMqttBridge
     msg_type: std_msgs.msg:String
     topic_from: /music_file
-    topic_to: music_file
+    topic_to: music_file_robot
   
