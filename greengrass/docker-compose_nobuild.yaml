@@ -23,7 +23,7 @@ services:
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
       - /home/ubuntu/audio:/app/audio 
       - /home/ggc_user/aws_iot_params.yaml:/config/aws_iot_params.yaml
-      - /etc/asound.conf:/home/ubuntu/.asoundrc   # Share ALSA configuration
+      - /home/ubuntu/.asoundrc:/etc/asound.conf   # Share ALSA configuration
 
 
   greengrass_bridge:
