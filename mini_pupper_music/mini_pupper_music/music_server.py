@@ -77,6 +77,7 @@ class MusicServiceNode(Node):
             return None
 
         file_path = os.path.join(music_folder, file_name)
+        self.get_logger().info(f"music file path is {file_path}!")
         if os.path.isfile(file_path):
             return file_path
         else:
