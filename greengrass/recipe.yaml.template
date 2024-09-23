@@ -1,0 +1,49 @@
+---
+RecipeFormatVersion: '2020-01-25'
+ComponentName: com.example.ros2.mini_pupper_v2
+ComponentVersion: '1.0.0'
+ComponentDescription: 'A basic component that runs a mini_pupper_v2 application'
+ComponentPublisher: Amazon
+ComponentDependencies:
+  aws.greengrass.DockerApplicationManager:
+    VersionRequirement: ~2.0.0
+  aws.greengrass.TokenExchangeService:
+    VersionRequirement: ~2.0.0
+ComponentConfiguration:
+  DefaultConfiguration:
+    accessControl:
+      aws.greengrass.ipc.mqttproxy:
+        com.example.PubSubPublisher:pubsub:1:
+          policyDescription: "Allows access to publish and subscribe to MQTT topics."
+          operations:
+          - "aws.greengrass#PublishToIoTCore"
+          - "aws.greengrass#SubscribeToIoTCore"
+          resources:
+          - "music_file"
+          - "cmusic_file"
+Manifests:
+
+  - Platform:
+      os: all
+    Lifecycle:
+        Bootstrap:
+          RequiresPrivilege: True
+          Script: |
+            echo "Bootstrapping the dance application! as root This runs only once during the deployment."
+            cp {artifacts:path}/routines/docker-compose_nobuild.yaml /home/ggc_user/
+            cat << EOF > {artifacts:path}/.env
+            AUTO_START={configuration:/auto_start}
+            SVCUID=$SVCUID
+            AWS_GG_NUCLEUS_DOMAIN_SOCKET_FILEPATH_FOR_COMPONENT=$AWS_GG_NUCLEUS_DOMAIN_SOCKET_FILEPATH_FOR_COMPONENT
+            EOF
+            chown ggc_user:ggc_group {artifacts:path}/.env
+        Install: |
+           docker tag YOUR_PRIVATE_ECR_IMAGE  DOCKER_IMAGE
+        Startup: |
+           docker-compose -f {artifacts:path}/docker-compose_nobuild.yaml up -d
+        Shutdown: |
+           docker-compose -f {artifacts:path}/docker-compose_nobuild.yaml down
+    Artifacts:
+      - URI: "docker:YOUR_PRIVATE_ECR_IMAGE"
+      - URI: "s3://S3_BUCKET_PLACEHOLDER/artifacts/docker-compose_nobuild.yaml"
+ 
