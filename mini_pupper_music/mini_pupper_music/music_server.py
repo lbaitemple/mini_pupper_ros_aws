@@ -31,13 +31,33 @@ class MusicServiceNode(Node):
         )
 
     def music_file_callback(self, msg):
-        request = type('Request', (), {})()  # Create a simple request object
-        request.file_name = msg.data  # Assume msg.data contains the file name
-        request.start_second = 0.0
-        request.duration = 0
-        response = self.play_music_callback(request, type('Response', (), {})())
-        # Optionally, you can log the response message
-        self.get_logger().info(response.message)
+        file_name = msg.data
+        if file_name == "stop":
+            self.get_logger().info("Received stop command via /music_file topic")
+            if self.music_player.playing:
+                self.music_player.stop_music()
+                self.get_logger().info("Music playback stopped.")
+            else:
+                self.get_logger().info("No music is being played.")
+        else:
+            file_path = self.get_valid_file_path(file_name)
+            if file_path is not None:
+                if not self.music_player.playing:
+                    self.music_player.start_music(file_path, 0, 0)  # You can modify start time/duration if needed
+                    self.get_logger().info(f"Playing music at {file_path}")
+                else:
+                    self.get_logger().info("Another music is already being played.")
+            else:
+                self.get_logger().warn(f"File {file_name} is not found.")
+#        request = type('Request', (), {})()  # Create a simple request object
+#        request.file_name = msg.data  # Assume msg.data contains the file name
+
+        
+#        request.start_second = 0.0
+#        request.duration = 0
+#        response = self.play_music_callback(request, type('Response', (), {})())
+#        # Optionally, you can log the response message
+#        self.get_logger().info(response.message)
 
     def play_music_callback(self, request, response):
         file_path = self.get_valid_file_path(request.file_name)
