@@ -83,5 +83,6 @@ RUN mkdir -p /root/.ros/camera_info/
 COPY mmal_service_16.1.yaml /root/.ros/camera_info
 COPY scripts/robot-entrypoint.sh  /robot-entrypoint.sh
 RUN chmod +x /robot-entrypoint.sh
+WORKDIR /
 ENTRYPOINT ["/robot-entrypoint.sh"]
 
