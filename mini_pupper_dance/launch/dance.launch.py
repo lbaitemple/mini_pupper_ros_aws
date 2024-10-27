@@ -44,6 +44,15 @@ def generate_launch_description():
                 {"music_config_path": dance_config_path}
            ]
         )
+    dance_node = Node(
+            package="mini_pupper_dance",
+            namespace="",
+            executable="dance",
+            name="dance",
+            parameters=[
+                {"dance_config_path": dance_config_path}
+            ]
+        ) 
         
     bringup_node=IncludeLaunchDescription(
             PythonLaunchDescriptionSource(bringup_path)
