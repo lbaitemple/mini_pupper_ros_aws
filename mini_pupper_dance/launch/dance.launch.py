@@ -63,8 +63,7 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(bringup_path)
     )
     return LaunchDescription([
-        dance_server_node,
-        dance_client_node,
+        dance_node,
         env,
         bringup_node, 
         music_server_node,
