@@ -62,6 +62,11 @@ class MusicServiceNode(Node):
                     response.message = 'No sound is currently playing.'
         return response
 
+    def play_sound(self):
+        self.is_playing = True
+        self.playback_thread = threading.Thread(target=self.play_sound_thread)
+        self.playback_thread.start()
+    
     def music_file_callback(self, msg):
         file_name = msg.data
         if file_name == "stop":
