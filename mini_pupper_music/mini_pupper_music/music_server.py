@@ -60,14 +60,31 @@ class SoundPlayerNode(Node):
             file_name = 'resource/robot1.wav'
         else:
             file_name = 'resource/'+ self.sound_file
-            
-        package_path = get_package_share_directory(package_name)
+
+        package_path = get_valid_file_path(file_name)
+        # package_path = get_package_share_directory(package_name)
         sound_file = os.path.join(package_path, file_name)
     
         data, fs = sf.read(sound_file, dtype='float32')
         while self.is_playing:
             sd.play(data, fs)
             sd.wait()
+
+    
+    def get_valid_file_path(self, file_name):
+        #package_name = 'mini_pupper_music'
+        #package_path = get_package_share_directory(package_name)
+        music_folder = os.getenv('MUSIC_FOLDER')  # Get the MUSIC_FOLDER environment variable
+        if music_folder is None:
+            self.get_logger().error('MUSIC_FOLDER environment variable is not set.')
+            return None
+
+        file_path = os.path.join(music_folder, file_name)
+        self.get_logger().info(f"music file path is {file_path}!")
+        if os.path.isfile(file_path):
+            return file_path
+        else:
+            return None
 
     def stop_sound(self):
         self.is_playing = False
