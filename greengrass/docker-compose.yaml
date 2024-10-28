@@ -3,10 +3,10 @@ services:
   greengrass_minipupper_image:
     build: 
         context: ./
-    image: ros-humble-greengrass-minipupper:latest
+    image: ros-humble-greengrass-dance-minipupper:latest
     
   pupper-robot:
-    image: ros-humble-greengrass-minipupper:latest
+    image: ros-humble-greengrass-dance-minipupper:latest
     command: ros2 launch mini_pupper_dance dance.launch.py
     environment:
       - DISPLAY
@@ -33,7 +33,7 @@ services:
 
 
   greengrass_bridge:
-    image: ros-humble-greengrass-minipupper:latest
+    image: ros-humble-greengrass-dance-minipupper:latest
     command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['cdance_config']" iot_topics:="['dance_config']"
     environment:
       - AWS_REGION
