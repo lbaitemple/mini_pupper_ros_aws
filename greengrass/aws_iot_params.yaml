@@ -33,10 +33,10 @@ bridge:
   # dance
   - factory: mqtt_bridge.bridge:MqttToRosBridge
     msg_type: std_msgs.msg:String
-    topic_from: iot_music_file
-    topic_to: /music_file
+    topic_from: dance_config
+    topic_to: /dance_config
   - factory: mqtt_bridge.bridge:RosToMqttBridge
     msg_type: std_msgs.msg:String
-    topic_from: /music_file
-    topic_to: iot_music_file
+    topic_from: /dance_config
+    topic_to: dance_config_robot
   
