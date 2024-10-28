@@ -21,39 +21,49 @@ class SoundPlayerNode(Node):
             self.play_sound_callback
         )
         self.is_playing = False
-        self.playback_thread = None
-        self.lock = threading.Lock()
+        self.music_player = MusicPlayer()
+        self.play_service = self.create_service(
+            PlayMusic,
+            'play_music',
+            self.play_music_callback
+        )
+        self.stop_service = self.create_service(
+            StopMusic,
+            'stop_music',
+            self.stop_music_callback
+        )
 
     def music_config_callback(self, msg):
         self.sound_file = msg.data
 
-    def play_sound_callback(self, request, response):
-        if request.data:
-            with self.lock:
-                if not self.is_playing:
-                    if (self.sound_file==''):
-                        file_name = 'robot1.wav'
-                    else:
-                        file_name = self.sound_file
-                        
-                    sound_file = self.get_valid_file_path(file_name)
-                    response.success = True
-                    response.message = 'Sound playback started.'
-                    self.music_player.start_music(sound_file, request.start_second, request.duration)
-                else:
-                    response.success = False
-                    response.message = 'Sound is already playing.'
+    def play_music_callback(self, request, response):
+        file_path = self.get_valid_file_path(request.file_name)
+        if file_path is not None:
+            if self.music_player.playing:
+                response.success = False
+                response.message = 'Another music is being played.'
+            else:
+                self.music_player.start_music(file_path,
+                                              request.start_second,
+                                              request.duration)
+                response.success = True
+                response.message = 'Music started playing.'
+                self.get_logger().info(f"playing music at {file_path}")
+
         else:
-            with self.lock:
-                if self.is_playing:
-                    self.stop_sound()
-                    response.success = True
-                    response.message = 'Sound playback stopped.'
-                else:
-                    response.success = False
-                    response.message = 'No sound is currently playing.'
+            response.success = False
+            response.message = f'File {request.file_name} is not found.'
         return response
 
+    def stop_music_callback(self, request, response):
+        if self.music_player.playing:
+            self.music_player.stop_music()
+            response.success = True
+            response.message = 'Music playback stopped.'
+        else:
+            response.success = False
+            response.message = 'No music is being played.'
+        return response
     
     def get_valid_file_path(self, file_name):
         #package_name = 'mini_pupper_music'
@@ -70,13 +80,9 @@ class SoundPlayerNode(Node):
         else:
             return None
 
-    def stop_sound(self):
-        self.is_playing = False
-        if self.playback_thread is not None:
-            self.playback_thread.join(timeout=0)
-            if self.playback_thread.is_alive():
-                # If the thread is still running, stop the sound playback
-                sd.stop()
+    def destroy_node(self):
+        self.music_player.destroy()
+        super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
