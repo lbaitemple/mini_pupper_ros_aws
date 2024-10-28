@@ -3,7 +3,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-from std_srvs.srv import SetBool
+from mini_pupper_interfaces.srv import PlayMusic, StopMusic
 from geometry_msgs.msg import Pose
 from std_msgs.msg import String
 from .math_operations import *
