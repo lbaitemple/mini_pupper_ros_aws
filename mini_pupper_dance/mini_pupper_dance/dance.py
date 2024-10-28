@@ -16,18 +16,22 @@ class MiniPupperMusicClientAsync(Node):
 
     def __init__(self):
         super().__init__('mini_pupper_music_client_async')
-        self.cli = self.create_client(SetBool, '/music_command')
-        while not self.cli.wait_for_service(timeout_sec=1.0):
-            self.get_logger().info('service not available, waiting again...')
-        self.req = SetBool.Request()
+        self.play_music_cli = self.create_client(PlayMusic, 'play_music')
+        self.stop_music_cli = self.create_client(StopMusic, 'stop_music')
+        while not self.play_music_cli.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('service music not available, waiting again...')
 
+    
+    def send_play_music_request(self, file_name, start_second):
+        req = PlayMusic.Request()
+        req.file_name = file_name
+        req.start_second = start_second
+        self.play_music_cli.call_async(req)  # Fire-and-forget style communication
 
-    def send_request(self, music_command):
-        self.req.data = music_command
-        self.get_logger().info('music service send {}'.format(music_command))
-        self.future = self.cli.call_async(self.req)
-        rclpy.spin_until_future_complete(self, self.future)
-        return self.future.result()
+    def send_stop_music_request(self):
+        req = StopMusic.Request()
+        self.stop_music_cli.call_async(req)  # Fire-and-forget style communication
+
         
 
 class DanceDemo(Node):
@@ -184,14 +188,16 @@ class DanceDemo(Node):
                         msg.data = value
                         self.music_publisher.publish(msg)
 
-                    response = self.music_client.send_request(interval)
-                    if(response.success == True):
-                        self.music_client.get_logger().info('Command Executed!')
+                        response = self.music_client.send_play_music_request(value, 0)
+                        if(response.success == True):
+                            self.music_client.get_logger().info('Command Executed!')
+                    else:
+                       self.music_client.send_stop_music_request() 
 
             
                    # await asyncio.get_event_loop().run_until_complete(self.music_callback(interval))
                    # await asyncio.run(self.music_callback(interval))
-                    #self.music_client.send_request(interval)
+                    #self.music_client.send_stop_music_request()
                         # call service to turn off music
                 elif (command == 'volume' ):
                     os.system("amixer -c 0 sset 'Headphone' {}%".format(value))                        
