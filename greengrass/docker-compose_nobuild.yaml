@@ -21,7 +21,8 @@ services:
       - /dev:/dev
       - /sys:/sys
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
-      - /home/ubuntu/audio:/app/audio 
+      - /home/ubuntu/minipupper/playlists:/app/audio 
+      - /home/ubuntu/minipupper/routines:/routines 
       - /home/ggc_user/aws_iot_params.yaml:/config/aws_iot_params.yaml
       - /home/ubuntu/.asoundrc:/etc/asound.conf   # Share ALSA configuration
 
