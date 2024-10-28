@@ -61,7 +61,7 @@ class SoundPlayerNode(Node):
         else:
             file_name = 'resource/'+ self.sound_file
 
-        package_path = get_valid_file_path(file_name)
+        package_path = self.get_valid_file_path(file_name)
         # package_path = get_package_share_directory(package_name)
         sound_file = os.path.join(package_path, file_name)
     
