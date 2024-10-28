@@ -21,7 +21,13 @@ class MusicServiceNode(Node):
             'stop_music',
             self.stop_music_callback
         )
-
+        
+        self.service = self.create_service(
+            SetBool,
+            'music_command',
+            self.play_sound_callback
+        )
+        
         # Create a subscriber for the /music_file topic
         self.music_file_subscriber = self.create_subscription(
             String,
@@ -29,6 +35,30 @@ class MusicServiceNode(Node):
             self.music_file_callback,
             10  # QoS profile, can adjust as needed
         )
+        self.is_playing = False
+        self.playback_thread = None
+        self.lock = threading.Lock()
+
+    def play_sound_callback(self, request, response):
+        if request.data:
+            with self.lock:
+                if not self.is_playing:
+                    self.play_sound()
+                    response.success = True
+                    response.message = 'Sound playback started.'
+                else:
+                    response.success = False
+                    response.message = 'Sound is already playing.'
+        else:
+            with self.lock:
+                if self.is_playing:
+                    self.stop_sound()
+                    response.success = True
+                    response.message = 'Sound playback stopped.'
+                else:
+                    response.success = False
+                    response.message = 'No sound is currently playing.'
+        return response
 
     def music_file_callback(self, msg):
         file_name = msg.data
