@@ -191,8 +191,8 @@ class DanceDemo(Node):
                         self.music_publisher.publish(msg)
 
                         response = self.music_client.send_play_music_request(value, 0.0)
-                        if(response.success == True):
-                            self.music_client.get_logger().info('Command Executed!')
+                        self.get_logger().info(response)
+                        
                     else:
                        self.music_client.send_stop_music_request() 
 
