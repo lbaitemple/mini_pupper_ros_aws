@@ -45,6 +45,8 @@ class DanceDemo(Node):
 
         self.dance_config_path = self.get_parameter('dance_config_path').get_parameter_value().string_value
         self.get_logger().info(self.dance_config_path)
+        if self.dance_config_path not in sys.path:
+            sys.path.append(self.dance_config_path)
         self.get_logger().info(str(self.dance_config_path))
         self.dance_config_name = ' '
         self.commands = []
