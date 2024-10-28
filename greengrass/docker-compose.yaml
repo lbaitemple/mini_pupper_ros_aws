@@ -14,6 +14,7 @@ services:
       - GAZEBO_MASTER_URI=http://localhost:5555
       - ROS_MASTER_URI=http://localhost:11311
       - MUSIC_FOLDER=/app/audio
+      - DANCE_CONFIG=/routines
       - HARDWARE=true
     network_mode: "host"
     privileged: true
@@ -26,13 +27,14 @@ services:
       - /sys:/sys
       - /tmp/esp32-proxy.socket:/tmp/esp32-proxy.socket
       - /home/ubuntu/minipupper/playlists:/app/audio 
+      - /home/ubuntu/minipupper/routines:/routines 
       - /home/ggc_user/aws_iot_params.yaml:/config/aws_iot_params.yaml
       - /home/ubuntu/.asoundrc:/etc/asound.conf   # Share ALSA configuration
 
 
   greengrass_bridge:
     image: ros-humble-greengrass-minipupper:latest
-    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['cmusic_file']" iot_topics:="['music_file']"
+    command: ros2 launch greengrass_bridge greengrass_bridge.launch.py ros_topics:="['cdance_config']" iot_topics:="['dance_config']"
     environment:
       - AWS_REGION
       - SVCUID
