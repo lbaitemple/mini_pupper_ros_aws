@@ -31,9 +31,15 @@ class SoundPlayerNode(Node):
         if request.data:
             with self.lock:
                 if not self.is_playing:
-                    self.play_sound()
+                    if (self.sound_file==''):
+                        file_name = 'robot1.wav'
+                    else:
+                        file_name = self.sound_file
+                        
+                    sound_file = self.get_valid_file_path(file_name)
                     response.success = True
                     response.message = 'Sound playback started.'
+                    self.music_player.start_music(sound_file, request.start_second, request.duration)
                 else:
                     response.success = False
                     response.message = 'Sound is already playing.'
@@ -47,28 +53,6 @@ class SoundPlayerNode(Node):
                     response.success = False
                     response.message = 'No sound is currently playing.'
         return response
-
-    def play_sound(self):
-        self.is_playing = True
-        self.playback_thread = threading.Thread(target=self.play_sound_thread)
-        self.playback_thread.start()
-
-    def play_sound_thread(self):
-        # Load and play the sound file continuously
-        package_name = 'mini_pupper_music'
-        if (self.sound_file==''):
-            file_name = 'robot1.wav'
-        else:
-            file_name = self.sound_file
-
-        # package_path = self.get_valid_file_path(file_name)
-        # package_path = get_package_share_directory(package_name)
-        sound_file = self.get_valid_file_path(file_name)
-    
-        data, fs = sf.read(sound_file, dtype='float32')
-        while self.is_playing:
-            sd.play(data, fs)
-            sd.wait()
 
     
     def get_valid_file_path(self, file_name):
