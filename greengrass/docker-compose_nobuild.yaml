@@ -3,7 +3,7 @@ services:
     
   pupper-robot:
     image: ros-humble-greengrass-minipupper:latest
-    command: ros2 launch mini_pupper_music music.launch.py
+    command: ros2 launch mini_pupper_dance dance.launch.py
     environment:
       - DISPLAY
       - QT_X11_NO_MITSHM=1
