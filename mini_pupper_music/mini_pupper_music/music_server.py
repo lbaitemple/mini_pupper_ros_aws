@@ -2,11 +2,9 @@
 
 import rclpy
 from rclpy.node import Node
-from std_srvs.srv import SetBool
-from std_msgs.msg import String
-import sounddevice as sd
-import soundfile as sf
-import threading
+from mini_pupper_interfaces.srv import PlayMusic, StopMusic
+from std_msgs.msg import String  # Import the message type
+from .music_player import MusicPlayer
 import os
 from ament_index_python.packages import get_package_share_directory
 
