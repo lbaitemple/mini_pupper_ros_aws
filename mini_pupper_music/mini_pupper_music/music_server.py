@@ -61,9 +61,9 @@ class SoundPlayerNode(Node):
         else:
             file_name = self.sound_file
 
-        package_path = self.get_valid_file_path(file_name)
+        # package_path = self.get_valid_file_path(file_name)
         # package_path = get_package_share_directory(package_name)
-        sound_file = os.path.join(package_path, file_name)
+        sound_file = self.get_valid_file_path(file_name)
     
         data, fs = sf.read(sound_file, dtype='float32')
         while self.is_playing:
