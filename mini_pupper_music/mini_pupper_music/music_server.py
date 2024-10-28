@@ -57,9 +57,9 @@ class SoundPlayerNode(Node):
         # Load and play the sound file continuously
         package_name = 'mini_pupper_music'
         if (self.sound_file==''):
-            file_name = 'resource/robot1.wav'
+            file_name = 'robot1.wav'
         else:
-            file_name = 'resource/'+ self.sound_file
+            file_name = self.sound_file
 
         package_path = self.get_valid_file_path(file_name)
         # package_path = get_package_share_directory(package_name)
