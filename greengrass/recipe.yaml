@@ -19,8 +19,8 @@ ComponentConfiguration:
           - "aws.greengrass#PublishToIoTCore"
           - "aws.greengrass#SubscribeToIoTCore"
           resources:
-          - "music_file"
-          - "iot_music_file"
+          - "dance_config"
+          - "cloud_dance_config"
 Manifests:
 
   - Platform:
