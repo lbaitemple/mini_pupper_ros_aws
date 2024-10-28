@@ -18,7 +18,7 @@ class SoundPlayerNode(Node):
         self.service = self.create_service(
             SetBool,
             'music_command',
-            self.play_sound_callback
+            self.play_music_callback
         )
         self.is_playing = False
         self.music_player = MusicPlayer()
