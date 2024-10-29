@@ -20,7 +20,7 @@ RUN python3 -m pip install awsiotsdk pydub pyaudio pydub sounddevice
 
 # ==== Package 1: ROS Demos Talker/Listener ==== 
 FROM build-base AS ros-demos-package
-LABEL component="com.example.ros2.mini_pupper_v2"
+LABEL component="com.example.ros2.dance.mini_pupper_v2"
 LABEL build_step="DemoNodesROSPackage_Build"
 
 # Clone the demos_ros_cpp package from within the ROS Demos monorepo.
