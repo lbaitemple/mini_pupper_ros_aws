@@ -31,6 +31,7 @@ Manifests:
           Script: |
             echo "Bootstrapping the dance application! as root This runs only once during the deployment."
             cp {artifacts:path}/docker-compose_nobuild.yaml /home/ggc_user/
+            cp {artifacts:path}/aws_iot_params.yaml /home/ggc_user/aws_iot_params.yaml
             cat << EOF > {artifacts:path}/.env
             AUTO_START={configuration:/auto_start}
             SVCUID=$SVCUID
@@ -46,4 +47,5 @@ Manifests:
     Artifacts:
       - URI: "docker:YOUR_PRIVATE_ECR_IMAGE"
       - URI: "s3://S3_BUCKET_PLACEHOLDER/artifacts/docker-compose_nobuild.yaml"
+      - URI: "s3://S3_BUCKET_PLACEHOLDER/artifacts/aws_iot_params.yaml"
  
