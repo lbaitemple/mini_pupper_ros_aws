@@ -3,7 +3,7 @@
 #aws iot describe-endpoint
 export DEPLOYMENT_BUCKET=libai09222024
 
-export DOCKER=ros-humble-greengrass-minipupper
+export DOCKER=ros-humble-greengrass-music-minipupper
 export IOT_ENDPOINT=`aws iot describe-endpoint | grep amazon | cut -d: -f 2 | sed 's/\"//g'` 
 export YOUR_PRIVATE_ECR_IMAGE=`aws ecr describe-repositories | grep repositoryUri | grep ${DOCKER}  | cut -d: -f 2 | sed 's/\"//g' | sed 's/\,//g' | tr -d ' '`
 #cd ~/environment/mini-pupper-aws
