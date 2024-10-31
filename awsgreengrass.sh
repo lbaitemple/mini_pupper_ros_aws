@@ -11,7 +11,7 @@ export ECR_IMAGE=${YOUR_PRIVATE_ECR_IMAGE}":latest"
 export DOCKER_IMAGE=${DOCKER}":latest"
 echo $ECR_IMAGE
 export RECIPE_CONFIG_FILE=greengrass/recipe.yaml
-export DEPLOYMENT_BUCKET=${DEPLOYMENT_BUCKET}"/mini_pupper"
+export DEPLOYMENT_BUCKET=${DEPLOYMENT_BUCKET}"/mini_pupper/dance"
 ##### no need to change anything below
 sed '3,6d' greengrass/docker-compose.yaml > greengrass/docker-compose_nobuild.yaml
 aws s3 cp greengrass/docker-compose_nobuild.yaml s3://${DEPLOYMENT_BUCKET}/artifacts/docker-compose_nobuild.yaml
