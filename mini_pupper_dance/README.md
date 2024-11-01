@@ -46,5 +46,8 @@ This package includes the following Python scripts in the mini_pupper_dance/mini
 - [demo.py](https://github.com/lbaitemple/mangdang/blob/main/routines/demo.py) (opens in a new tab)
 : The dancing episode. You should edit your dancing episode here. You can also modify the music file name here.
 
+<a href="https://github.com/lbaitemple/mangdang/blob/main/routines/demo.py" target="_blank">demo.py</a>
+
+
 ### Rebuild
 If you make any changes, you will need to rebuild the modified packages. After that, you can follow the "Quick Start" instructions again to make the robot dance.
