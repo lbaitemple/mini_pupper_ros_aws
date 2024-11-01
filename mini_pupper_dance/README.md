@@ -43,10 +43,10 @@ This package includes the following Python scripts in the mini_pupper_dance/mini
 - dance_client.py: The client reads and sends dance commands. It sends a service command to play music on the first dance command and sends another service command to stop music on the last dance command.
 - dance_server.py: The server receives dance commands and executes them. You can add more dance functions in dance_server.py.
 - pose_controller.py: A pose controller for Mini Pupper. You don't need to modify this.
-- [demo.py](https://github.com/lbaitemple/mangdang/blob/main/routines/demo.py) (opens in a new tab)
+- [<a href="https://github.com/lbaitemple/mangdang/blob/main/routines/demo.py" target="_blank">demo.py</a>]
 : The dancing episode. You should edit your dancing episode here. You can also modify the music file name here.
 
-<a href="https://github.com/lbaitemple/mangdang/blob/main/routines/demo.py" target="_blank">demo.py</a>
+
 
 
 ### Rebuild
