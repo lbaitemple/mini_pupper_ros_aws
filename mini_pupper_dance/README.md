@@ -19,16 +19,17 @@ python3 -m pip install awsiotsdk pydub pyaudio pydub sounddevice
 
 ```sh
 # Terminal 1 (ssh)
-. ~/ros2_ws/install/setup.bash # setup.zsh if you use zsh instead of bash
+export MUSIC_FOLDER=/home/ubuntu/minipupper/playlists
+export DANCE_CONFIG=/home/ubuntu/minipupper/routines
+export PYTHONPATH=$PYTHONPATH:$DANCE_CONFIG:/usr/local/lib/python3.10/dist-packages
+source ~/dance_ws/install/setup.bash # setup.zsh if you use zsh instead of bash
 ros2 launch mini_pupper_dance dance.launch.py
 ```
 
 ### 2.2 Mini Pupper
 ```sh
 # Terminal 2 (ssh)
-export MUSIC_FOLDER=/home/ubuntu/minipupper/playlists
-export DANCE_CONFIG=/home/ubuntu/minipupper/routines
-export PYTHONPATH=$PYTHONPATH:$DANCE_CONFIG:/usr/local/lib/python3.10/dist-packages
+
 ros2 topic pub --once /dance_config std_msgs/msg/String data:\ \'demo\'\ 
 
 ```
