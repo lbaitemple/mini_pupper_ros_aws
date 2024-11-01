@@ -20,7 +20,7 @@ python3 -m pip install awsiotsdk pydub pyaudio pydub sounddevice
 ```sh
 # Terminal 1 (ssh)
 . ~/ros2_ws/install/setup.bash # setup.zsh if you use zsh instead of bash
-ros2 launch mini_pupper_bringup dance.launch.py
+ros2 launch mini_pupper_dance dance.launch.py
 ```
 
 ### 2.2 Mini Pupper
