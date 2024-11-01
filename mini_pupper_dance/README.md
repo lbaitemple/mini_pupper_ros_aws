@@ -9,8 +9,8 @@ The main interface is described in the "mini_pupper_interfaces" package. For mor
 ## 1. Install extra packages for playing music
 
 ```sh
-sudo apt-get install ffmpeg portaudio19-dev -y
-pip install pydub pyaudio
+sudo apt-get install python3-pip  ffmpeg portaudio19-dev -y
+python3 -m pip install awsiotsdk pydub pyaudio pydub sounddevice
 ```
 
 ## 2. Quick Start
@@ -20,20 +20,17 @@ pip install pydub pyaudio
 ```sh
 # Terminal 1 (ssh)
 . ~/ros2_ws/install/setup.bash # setup.zsh if you use zsh instead of bash
-ros2 launch mini_pupper_bringup bringup.launch.py
+ros2 launch mini_pupper_bringup dance.launch.py
 ```
 
+### 2.2 Mini Pupper
 ```sh
 # Terminal 2 (ssh)
-. ~/ros2_ws/install/setup.bash 
-ros2 launch mini_pupper_music music.launch.py
-```
+export MUSIC_FOLDER=/home/ubuntu/minipupper/playlists
+export DANCE_CONFIG=/home/ubuntu/minipupper/routines
+export PYTHONPATH=$PYTHONPATH:$DANCE_CONFIG:/usr/local/lib/python3.10/dist-packages
+ros2 topic pub --once /dance_config std_msgs/msg/String data:\ \'demo\'\ 
 
-### 2.2 PC (Or Mini Pupper)
-```sh
-# Terminal 3 (ssh)
-source ~/ros2_ws/install/setup.bash
-ros2 launch mini_pupper_dance dance.launch.py
 ```
 
 ### 3 How to modify
